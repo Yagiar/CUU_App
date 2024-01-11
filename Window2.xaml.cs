@@ -53,8 +53,15 @@ namespace ObjectDetected
                         mediaElement.LoadedBehavior = MediaState.Manual;
                         mediaElement.MediaOpened += (sender, e) => mediaElement.Play();
 
+                        TextBlock videoTitle = new TextBlock
+                        {
+                            Text = $"Video {videoIndex + 1}",
+                            HorizontalAlignment = HorizontalAlignment.Center
+                        };
+
                         StackPanel videoPanel = new StackPanel();
                         videoPanel.Children.Add(mediaElement);
+                        videoPanel.Children.Add(videoTitle);
 
                         rowPanel.Children.Add(videoPanel);
                         videoIndex++;
