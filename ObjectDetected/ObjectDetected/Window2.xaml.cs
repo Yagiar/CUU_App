@@ -95,9 +95,10 @@ namespace ObjectDetected
                 {
                     if (videoIndex < videoPaths.Count)
                     {
+                        string path = videoPaths[videoIndex];
                         MediaElement mediaElement = new MediaElement
                         {
-                            Source = new Uri(videoPaths[videoIndex]),
+                            Source = new Uri(path),
                             LoadedBehavior = MediaState.Manual,
                             Width = widths * modifire,
                             Height = heights * modifire,
@@ -108,7 +109,7 @@ namespace ObjectDetected
                         mediaElement.Volume = 0;
                         TextBlock videoTitle = new TextBlock
                         {
-                            Text = separete_video(videoPaths[videoIndex]),
+                            Text = separete_video(path),
                             HorizontalAlignment = HorizontalAlignment.Center,
                             Width = widths * modifire,
                             Height = heights * modifire,
@@ -117,13 +118,24 @@ namespace ObjectDetected
                         StackPanel videoPanel = new StackPanel();
                         videoPanel.Children.Add(mediaElement);
                         videoPanel.Children.Add(videoTitle);
+                       
 
                         rowPanel.Children.Add(videoPanel);
+                        mediaElement.MouseLeftButtonDown += (s, e) =>
+                        {
+                            OpenVideoPlayer(path);
+                        };
                         videoIndex++;
                     }
                 }
                 videosContainer.Children.Add(rowPanel);
             }
+        }
+        private void OpenVideoPlayer(string videoPath)
+        {
+            Window3 videoPlayerWindow = new Window3();
+            videoPlayerWindow.LoadVideo(videoPath);
+            videoPlayerWindow.Show();
         }
     }
 }

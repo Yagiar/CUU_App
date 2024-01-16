@@ -18,3 +18,5 @@ C:\Users\shabu\source\repos\ObjectDetected\ObjectDetected\obj\Debug\ObjectDetect
 C:\Users\shabu\source\repos\ObjectDetected\ObjectDetected\obj\Debug\ObjectDetected.pdb
 C:\Users\shabu\source\repos\ObjectDetected\ObjectDetected\obj\Debug\Window2.g.cs
 C:\Users\shabu\source\repos\ObjectDetected\ObjectDetected\obj\Debug\Window2.baml
+C:\Users\shabu\source\repos\ObjectDetected\ObjectDetected\obj\Debug\Window3.g.cs
+C:\Users\shabu\source\repos\ObjectDetected\ObjectDetected\obj\Debug\Window3.baml
