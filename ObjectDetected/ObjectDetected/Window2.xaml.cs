@@ -45,12 +45,12 @@ namespace ObjectDetected
                 if (Directory.Exists(folderPath))
                 {
                     // Получаем список файлов в папке
-                    videoPaths = Directory.GetFiles(folderPath).ToList();
+                    videoPaths = Directory.GetFiles(folderPath).Select(System.IO.Path.GetFullPath).ToList();
                     // Выводим имена файлов (можете использовать как угодно)
                 }
                 else
                 {
-                    Console.WriteLine("Указанная папка не существует.");
+                    Console.WriteLine("Указанная папка не существует.");    
                 }
             }
             catch (Exception ex)
@@ -79,7 +79,7 @@ namespace ObjectDetected
         private void LoadVideos()
         {
             int videoIndex = 0;
-            file_list(@"C:\Users\shabu\source\repos\ObjectDetected\ObjectDetected\Senri");
+            file_list(@"..\..\videos");
 
             // Определение общего количества строк
             int totalRows = (int)Math.Ceiling((double)videoPaths.Count / videosPerRow);
