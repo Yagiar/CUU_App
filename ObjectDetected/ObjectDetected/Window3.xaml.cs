@@ -1,31 +1,122 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Threading;
+using Python.Runtime;
+using OpenCvSharp;
+using System.Drawing;
+using System.Windows.Media.Media3D;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Windows.Controls;
+using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Interop;
 
 namespace ObjectDetected
 {
     /// <summary>
     /// Логика взаимодействия для Window3.xaml
     /// </summary>
-    public partial class Window3 : Window
+    public partial class Window3 : System.Windows.Window
     {
         private System.Windows.Threading.DispatcherTimer positionTimer;
         private bool isDraggingSlider = false;
+        private MemoryStream imageStream;
+        private static dynamic torch;
+        private static dynamic model;
+        private VideoCapture videoCapture;
+        private readonly DrawingVisual visual = new DrawingVisual();
         public Window3()
         {
             InitializeComponent();
+            InitializePythonEngine();
+            mediaPlayer.MediaOpened += MediaElement_MediaOpened;
+            // Инициализируем поток для передачи кадров в Python
+            imageStream = new MemoryStream();
+
+            // Запускаем таймер для отправки кадров в Python
+            DispatcherTimer timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(1000 / 30) // 30 кадров в секунду
+            };
+            timer.Tick += (sender, e) => CompositionTarget_Rendering();
+            timer.Start();
         }
+        private void InitializeCamera(string str)
+        {
+            videoCapture = new VideoCapture(0); // Используйте 0 для захвата с веб-камеры
+            videoCapture.Open(str);
+
+        }
+        private void CompositionTarget_Rendering()
+        {
+            Mat frame;
+            RenderTargetBitmap bitmap;
+            var width = mediaPlayer.NaturalVideoWidth;
+            var height = mediaPlayer.NaturalVideoHeight;
+            if (width > 0 && height > 0)
+            {
+
+                using (var dc = visual.RenderOpen())
+                {
+                    dc.DrawRectangle(
+                        new VisualBrush(mediaPlayer), null,
+                        new System.Windows.Rect(0, 0, width, height));
+                }
+                bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Default);
+                bitmap.Render(visual);
+                BitmapSource bitmapSource = BitmapFrame.Create(bitmap);
+
+                images.Source = bitmapSource;
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    encoder.Save(stream);
+                    stream.Position = 0;
+
+                    // Чтение изображения из MemoryStream в OpenCV Mat
+                    frame = Cv2.ImDecode(stream.ToArray(), ImreadModes.Color);
+                    Cv2.ImShow("Window Name", frame);
+                }
+
+                SendImageToPython(frame);
+            }
+            
+
+
+        }
+        private void InitializePythonEngine()
+        {
+            Runtime.PythonDLL = @"C:\Users\shabu\AppData\Local\Programs\Python\Python311\python311.dll";
+            // Инициализация Python
+            PythonEngine.Initialize();
+        }
+
+        private void SendImageToPython(Mat image)
+        {
+            using (Py.GIL())
+            {
+                if (torch == null)
+                    torch = Py.Import("torch");
+                if (model == null)
+                    model = torch.hub.load(@"ultralytics\yolov5", "custom", path: @"C:\Users\shabu\CUU_App\best.pt", source: "local");
+                dynamic np = Py.Import("numpy");
+                dynamic cv2 = Py.Import("cv2");
+
+                // Преобразование Mat в массив NumPy
+                byte[] imageBytes = new byte[image.Total() * image.ElemSize()];
+                Marshal.Copy(image.Data, imageBytes, 0, imageBytes.Length);
+                var npImage = np.frombuffer(imageBytes, dtype: np.uint8).reshape(image.Height, image.Width, image.Channels());
+
+                dynamic results = model(npImage);
+                Console.WriteLine(results.ToString());
+            }
+        }
+
         private void Play_Click(object sender, RoutedEventArgs e)
         {
             positionTimer.Start();
@@ -53,8 +144,8 @@ namespace ObjectDetected
         {
             try
             {
+                InitializeCamera(videoPath);
                 mediaPlayer.Source = new Uri(videoPath);
-                mediaPlayer.Play();
                 mediaPlayer.MediaOpened += MediaElement_MediaOpened;
                 positionTimer = new System.Windows.Threading.DispatcherTimer();
                 positionTimer.Interval = TimeSpan.FromMilliseconds(100);
@@ -74,6 +165,7 @@ namespace ObjectDetected
             progressSlider.Maximum = mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
             positionTimer.Start();
             isDraggingSlider = false;
+            CompositionTarget_Rendering();
         }
 
         private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)

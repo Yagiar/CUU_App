@@ -14,5 +14,6 @@
             <Button Content="Стоп" Click="Stop_Click"/>
             <Slider x:Name="progressSlider" Width="200" ValueChanged="ProgressSlider_ValueChanged"/>
         </StackPanel>
+        <Image x:Name="images" HorizontalAlignment="Left" Height="227" Margin="364,277,0,0" VerticalAlignment="Top" Width="313"/>
     </Grid>
 </Window>
