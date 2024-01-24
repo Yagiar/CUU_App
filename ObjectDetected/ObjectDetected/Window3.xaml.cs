@@ -80,7 +80,7 @@ namespace ObjectDetected
 
                     // Чтение изображения из MemoryStream в OpenCV Mat
                     frame = Cv2.ImDecode(stream.ToArray(), ImreadModes.Color);
-                    Cv2.ImShow("Window Name", frame);
+                    
                 }
 
                 SendImageToPython(frame);
@@ -115,7 +115,10 @@ namespace ObjectDetected
                 dynamic results = model(npImage);
                 dynamic resultsJson = results.pandas().xyxy[0].to_json(orient: "records");
                 Console.WriteLine(resultsJson.ToString());
+<<<<<<< HEAD
                 Console.WriteLine(results.ToString());
+=======
+>>>>>>> e37fd4c (repair)
             }
         }
 
