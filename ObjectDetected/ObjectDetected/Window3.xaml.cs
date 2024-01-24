@@ -115,13 +115,7 @@ namespace ObjectDetected
                 dynamic results = model(npImage);
                 dynamic resultsJson = results.pandas().xyxy[0].to_json(orient: "records");
                 Console.WriteLine(resultsJson.ToString());
-<<<<<<< HEAD
-<<<<<<< HEAD
                 Console.WriteLine(results.ToString());
-=======
->>>>>>> e37fd4c (repair)
-=======
->>>>>>> f536cc8564ab11dc55402358b6204f1106bda681
             }
         }
 
