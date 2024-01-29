@@ -14,6 +14,11 @@ using System.Runtime.InteropServices;
 using System.Windows.Controls;
 using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Interop;
+using System.Reflection.Emit;
+using System.Windows.Shapes;
+using IronPython.Runtime.Operations;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ObjectDetected
 {
@@ -25,14 +30,24 @@ namespace ObjectDetected
         private System.Windows.Threading.DispatcherTimer positionTimer;
         private bool isDraggingSlider = false;
         private MemoryStream imageStream;
+
+        private RenderTargetBitmap bitmap;
         private static dynamic torch;
         private static dynamic model;
         private VideoCapture videoCapture;
+        private Polygon selectArea;
         private readonly DrawingVisual visual = new DrawingVisual();
+        System.Windows.Point p1, p2;
+        System.Windows.Point p11, p12, p13, p14;
+        System.Windows.Point dp11, dp12, dp13, dp14;
+        bool flag;
+        bool selectflag=false;
         public Window3()
         {
+           ;
             InitializeComponent();
             InitializePythonEngine();
+            
             mediaPlayer.MediaOpened += MediaElement_MediaOpened;
             // Инициализируем поток для передачи кадров в Python
             imageStream = new MemoryStream();
@@ -54,7 +69,6 @@ namespace ObjectDetected
         private void CompositionTarget_Rendering()
         {
             Mat frame;
-            RenderTargetBitmap bitmap;
             var width = mediaPlayer.NaturalVideoWidth;
             var height = mediaPlayer.NaturalVideoHeight;
             if (width > 0 && height > 0)
@@ -68,10 +82,17 @@ namespace ObjectDetected
                 }
                 bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Default);
                 bitmap.Render(visual);
+                
                 BitmapSource bitmapSource = BitmapFrame.Create(bitmap);
-
-                images.Source = bitmapSource;
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
+                if (p1.X > 0 && p2.X > 0 && selectflag==true)
+                {
+                    int swidth = (int)(Math.Max(p1.X, p2.X) - Math.Min(p1.X, p2.X));
+                    int sheights = (int)(Math.Max(p1.Y, p2.Y) - Math.Min(p1.Y, p2.Y));
+                    CroppedBitmap croppedBitmap = new CroppedBitmap(bitmapSource, new Int32Rect((int)p1.X, (int)p1.Y, swidth, sheights));
+                    bitmapSource = croppedBitmap;
+                    
+                }
                 encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
                 using (MemoryStream stream = new MemoryStream())
                 {
@@ -114,16 +135,63 @@ namespace ObjectDetected
 
                 dynamic results = model(npImage);
                 dynamic resultsJson = results.pandas().xyxy[0].to_json(orient: "records");
-                Console.WriteLine(resultsJson.ToString());
+                string resultsJsonString = resultsJson.ToString();
+
+                // Преобразование строки JSON в список (или массив)
+                List<ResultItem> resultList = JsonConvert.DeserializeObject<List<ResultItem>>(resultsJsonString);
+                paint_area.Children.Clear();
+                // Теперь resultList содержит данные из resultsJson в виде списка объектов ResultItem
+                double scaleX = (mediaPlayer.ActualWidth / mediaPlayer.NaturalVideoWidth);
+                double scaleY = (mediaPlayer.ActualHeight / mediaPlayer.NaturalVideoHeight);
+
+                // Проход по всем объектам и масштабирование координат
+                foreach (var item in resultList)
+                {
+                    item.Xmin *= scaleX;
+                    item.Ymin *= scaleY;
+                    item.Xmax *= scaleX;
+                    item.Ymax *= scaleY;
+                }
+                foreach (var item in resultList)
+                {
+
+                    
+                    paint_area.Children.Add(draw(item.Xmin, item.Ymin, item.Xmax, item.Ymax, 2, System.Windows.Media.Brushes.LightGreen));
+                    //Console.WriteLine($"Class: {item.Class}, Name: {item.Name}");
+                    //Console.WriteLine($"Confidence: {item.Confidence}");
+                    //Console.WriteLine($"Bounding Box: ({item.Xmin}, {item.Ymin}, {item.Xmax}, {item.Ymax})");
+                    //Console.WriteLine();
+                }
+                ImageBrush brush = new ImageBrush(bitmap);
+                paint_area.Background = brush;
+                if(selectArea!=null)
+                    paint_area.Children.Add(selectArea);
                 Console.WriteLine(results.ToString());
             }
         }
-
+        private Polygon draw(double x1,double y1,double x2,double y2,int s, System.Windows.Media.Brush b)
+        {
+            Polygon r = new Polygon();
+            dp11.X = x1;
+            dp11.Y = y1;
+            dp12.X = x1;
+            dp12.Y = y2;
+            dp13.X = x2;
+            dp13.Y = y2;
+            dp14.X = x2;
+            dp14.Y = y1;
+            r.Points.Add(dp11);
+            r.Points.Add(dp12);
+            r.Points.Add(dp13);
+            r.Points.Add(dp14);
+            r.StrokeThickness = s;
+            r.Stroke = b;
+            return r;
+        }
         private void Play_Click(object sender, RoutedEventArgs e)
         {
             positionTimer.Start();
             isDraggingSlider = false;
-
             mediaPlayer.Play();
         }
 
@@ -190,6 +258,19 @@ namespace ObjectDetected
                 progressSlider.Value = mediaPlayer.Position.TotalSeconds;
             }
         }
+
+        private void select_btn_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (selectflag == false)
+            {
+                selectflag = true;
+            }
+            else
+            {
+                selectflag = false;
+            }
+        }
+
         private void Slider_DragStarted(object sender, DragStartedEventArgs e)
         {
             isDraggingSlider = true;
@@ -201,6 +282,8 @@ namespace ObjectDetected
             mediaPlayer.Position = TimeSpan.FromSeconds(progressSlider.Value);
             mediaPlayer.Play();
         }
+
+
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             // Обновление времени воспроизведения при изменении положения слайдера
@@ -208,6 +291,33 @@ namespace ObjectDetected
             {
                 mediaPlayer.Position = TimeSpan.FromSeconds(progressSlider.Value);
             }
+        }
+
+        private void paint_area_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            paint_area.Children.Clear();
+            flag = true;
+            p1 = e.GetPosition(paint_area);
+        }
+
+        private void paint_area_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (flag == true)
+            {
+                p2 = e.GetPosition(paint_area);
+            }
+        }
+        
+
+        private void paint_area_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            flag = false;
+            if (p1.X > 0 && p1.Y > 0)
+            {
+                p2 = e.GetPosition(paint_area);
+                selectArea = draw(p1.X, p1.Y, p2.X, p2.Y, 10, System.Windows.Media.Brushes.Black);
+            }
+
         }
     }
 }

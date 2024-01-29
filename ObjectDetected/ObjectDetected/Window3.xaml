@@ -7,13 +7,16 @@
         mc:Ignorable="d"
         Title="Window3" Height="450" Width="800">
     <Grid>
-        <MediaElement x:Name="mediaPlayer" Margin="10" LoadedBehavior="Manual"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10">
+        <MediaElement Panel.ZIndex="0" x:Name="mediaPlayer" Margin="10" LoadedBehavior="Manual"/>
+        <StackPanel Panel.ZIndex="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10">
             <Button Content="Воспроизвести" Click="Play_Click"/>
             <Button Content="Пауза" Click="Pause_Click"/>
             <Button Content="Стоп" Click="Stop_Click"/>
             <Slider x:Name="progressSlider" Width="200" ValueChanged="ProgressSlider_ValueChanged"/>
+            <Button x:Name="select_btn" Content="select" Click="select_btn_Click_1" />
         </StackPanel>
         <Image x:Name="images" HorizontalAlignment="Left" Height="227" Margin="364,277,0,0" VerticalAlignment="Top" Width="313"/>
+        
+        <Canvas Panel.ZIndex="1" Background="White" x:Name="paint_area" Margin="10" MouseDown="paint_area_MouseDown" MouseMove="paint_area_MouseMove" MouseUp="paint_area_MouseUp"/>
     </Grid>
 </Window>

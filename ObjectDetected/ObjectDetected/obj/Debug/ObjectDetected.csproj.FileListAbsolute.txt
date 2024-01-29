@@ -74,3 +74,5 @@ C:\Users\shabu\CUU_App\ObjectDetected\ObjectDetected\bin\Debug\dll\x64\OpenCvSha
 C:\Users\shabu\CUU_App\ObjectDetected\ObjectDetected\bin\Debug\dll\x64\opencv_videoio_ffmpeg490_64.dll
 C:\Users\shabu\CUU_App\ObjectDetected\ObjectDetected\bin\Debug\OpenCvSharp.dll
 C:\Users\shabu\CUU_App\ObjectDetected\ObjectDetected\bin\Debug\OpenCvSharp.xml
+C:\Users\shabu\CUU_App\ObjectDetected\ObjectDetected\bin\Debug\Newtonsoft.Json.dll
+C:\Users\shabu\CUU_App\ObjectDetected\ObjectDetected\bin\Debug\Newtonsoft.Json.xml
