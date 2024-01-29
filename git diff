@@ -1,0 +1,212 @@
+[33mcommit f90b2593a2f6bf97d25aa052e3d43d7f7f0be58c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Wed Jan 24 11:24:02 2024 +0300
+
+    Update packages.config
+
+[33mcommit d806bfffba9754f5a4be491110d12fe037928db6[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Wed Jan 24 11:23:38 2024 +0300
+
+    Update Window3.xaml.cs
+
+[33mcommit f8e8e1fc8ded8526b93c2e83c57d9e565c6e2058[m
+Merge: e1683f9 f536cc8
+Author: Senri <shaburov8242@gmail.com>
+Date:   Wed Jan 24 11:21:37 2024 +0300
+
+    Merge branch 'main' of github.com:Yagiar/CUU_App
+
+[33mcommit e1683f9ff73ed24163c339bee9bd58f14b821eb7[m
+Author: Senri <shaburov8242@gmail.com>
+Date:   Wed Jan 24 10:59:39 2024 +0300
+
+    repair
+
+[33mcommit b04196e4f081975c4bc088883abffeb6e9afbdcc[m
+Author: Senri <shaburov8242@gmail.com>
+Date:   Wed Jan 24 11:02:00 2024 +0300
+
+    repair
+
+[33mcommit f536cc8564ab11dc55402358b6204f1106bda681[m
+Author: Senri <shaburov8242@gmail.com>
+Date:   Wed Jan 24 10:59:39 2024 +0300
+
+    repair
+
+[33mcommit e37fd4cefcd2c732d1af0b716a2d1253a787091b[m
+Author: Senri <shaburov8242@gmail.com>
+Date:   Wed Jan 24 10:53:36 2024 +0300
+
+    repair
+
+[33mcommit 8f9645fa13c9ee18c896b8124681c5a59e948088[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Wed Jan 24 10:25:02 2024 +0300
+
+    Add files via upload
+
+[33mcommit 0637e73c5b32733b2294356dfb13c15739b50bb1[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Wed Jan 24 10:15:09 2024 +0300
+
+    Вывод координат
+
+[33mcommit b8d2365bb066f6f44722e76d739996aa5d8012ec[m
+Author: Senri <shaburov8242@gmail.com>
+Date:   Tue Jan 23 18:46:54 2024 +0300
+
+    Добавил ии
+
+[33mcommit 3516496ff02ef9bb6adf50f5dc4e841ed4c72dd6[m
+Author: Senri <shaburov8242@gmail.com>
+Date:   Tue Jan 16 19:30:02 2024 +0300
+
+    Перемотка видео
+
+[33mcommit e5b9eb3a05af8d2b0990a1ff66681d4d924d0b86[m
+Author: Senri <shaburov8242@gmail.com>
+Date:   Tue Jan 16 19:22:59 2024 +0300
+
+    Исправил пути
+
+[33mcommit 021ef25d5c1eb16ac5527b7d36fc89c194577802[m
+Author: amv <amv.21@uni-dubna.ru>
+Date:   Tue Jan 16 19:04:55 2024 +0300
+
+    1st full upload
+
+[33mcommit 3aa30dd92bfe94383c2a08c1d21528241cd4424d[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Tue Jan 16 18:30:43 2024 +0300
+
+    Add files via upload
+    
+    Добавил открытие видео и небольшое управление
+
+[33mcommit 85412b0fbaa5781c76ddc58a829de1ae07b1c7c5[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:12:39 2024 +0300
+
+    Add files via upload
+
+[33mcommit 96233719343c2a273fc29fccc82bbd7e1de30022[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:10:34 2024 +0300
+
+    Add files via upload
+
+[33mcommit 783d6396126f4d462bf9e3aa643055e0578adb23[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:09:11 2024 +0300
+
+    Delete Window2.xaml.cs
+
+[33mcommit 527475fb592814e235b3f194d5f1419385fff8e4[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:09:05 2024 +0300
+
+    Delete Window2.xaml
+
+[33mcommit 0d369429c75ccdbeb36f5d8feec31ea59c3d1042[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:08:59 2024 +0300
+
+    Delete Window1.xaml.cs
+
+[33mcommit d86ed8b402e473e5c063174aec3e29486f99aef0[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:08:54 2024 +0300
+
+    Delete Window1.xaml
+
+[33mcommit 0d37ddbc3192b2323e798575dab5ee3384a613b7[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:08:41 2024 +0300
+
+    Delete ObjectDetected.csproj
+
+[33mcommit 5a00c76886b58ee10f2c453afb59723786f09605[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:08:35 2024 +0300
+
+    Delete MainWindow.xaml.cs
+
+[33mcommit 68df85ac368b6f6914e6c3dbc4a55d0c0ef3c810[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:08:29 2024 +0300
+
+    Delete MainWindow.xaml
+
+[33mcommit 9d7ee2deeee97cc3c0d1db401a96e7e9411bb786[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:08:23 2024 +0300
+
+    Delete App.xaml.cs
+
+[33mcommit 5cc8cbbfcfa24bc2f8f45f8153bf7dfc79392f4f[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:08:10 2024 +0300
+
+    Delete App.xaml
+
+[33mcommit 2810ff79fa62963963bb9219d63529bee909d588[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:07:56 2024 +0300
+
+    Delete App.config
+
+[33mcommit f5e2f7846884ee4d149baba3cb59a2d53e26ff5a[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:07:45 2024 +0300
+
+    Delete obj directory
+
+[33mcommit 425527fd536c737a89a8e37cba6ec92d99f23737[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:07:38 2024 +0300
+
+    Delete bin directory
+
+[33mcommit 42ae0e5ba500a2bfa3834650ae96758e97fdfe5b[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:07:33 2024 +0300
+
+    Delete Properties directory
+
+[33mcommit 68a74cf83f9f9db491605a855328f74a6944359e[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:07:02 2024 +0300
+
+    Delete delete_me.txt
+
+[33mcommit 26a2fc6e1c8979a83814e876a3a2e12dba5e8a73[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Sun Jan 14 20:06:14 2024 +0300
+
+    Create delete_me.txt
+    
+    This file is to be deleted
+
+[33mcommit b603f254db0c096a8dabf0933590be93587bac48[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Thu Jan 11 17:38:58 2024 +0300
+
+    Видео
+    
+    Добавил автоматическую генерацию названия видео
+
+[33mcommit cfe1206f266413651525ecdb047a8ac8c7b7912d[m
+Author: Senri12 <97281809+Senri12@users.noreply.github.com>
+Date:   Thu Jan 11 17:37:00 2024 +0300
+
+    Приложение
+    
+    Добавил окна регистрации и авторизации плюс заготовку под отображение контента
+
+[33mcommit 99c305bd5459b1a1f8d190c6bc6d59387eaf8b9a[m
+Author: Yagiar <41523046+Yagiar@users.noreply.github.com>
+Date:   Mon Dec 25 11:37:19 2023 +0300
+
+    Initial commit
