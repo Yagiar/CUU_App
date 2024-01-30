@@ -87,10 +87,17 @@ namespace ObjectDetected
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
                 if (p1.X > 0 && p2.X > 0 && selectflag==true)
                 {
-                    int swidth = (int)(Math.Max(p1.X, p2.X) - Math.Min(p1.X, p2.X));
-                    int sheights = (int)(Math.Max(p1.Y, p2.Y) - Math.Min(p1.Y, p2.Y));
-                    CroppedBitmap croppedBitmap = new CroppedBitmap(bitmapSource, new Int32Rect((int)p1.X, (int)p1.Y, swidth, sheights));
-                    bitmapSource = croppedBitmap;
+                    try
+                    {
+                        int swidth = (int)(Math.Max(p1.X, p2.X) - Math.Min(p1.X, p2.X));
+                        int sheights = (int)(Math.Max(p1.Y, p2.Y) - Math.Min(p1.Y, p2.Y));
+                        CroppedBitmap croppedBitmap = new CroppedBitmap(bitmapSource, new Int32Rect((int)p1.X, (int)p1.Y, swidth, sheights));
+                        bitmapSource = croppedBitmap;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
                     
                 }
                 encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
@@ -112,7 +119,7 @@ namespace ObjectDetected
         }
         private void InitializePythonEngine()
         {
-            Runtime.PythonDLL = @"C:\Users\shabu\AppData\Local\Programs\Python\Python311\python311.dll";
+            Runtime.PythonDLL = @"C:\Users\admi1\AppData\Local\Programs\Python\Python310\python310.dll";
             // Инициализация Python
             PythonEngine.Initialize();
         }
@@ -124,7 +131,7 @@ namespace ObjectDetected
                 if (torch == null)
                     torch = Py.Import("torch");
                 if (model == null)
-                    model = torch.hub.load(@"ultralytics\yolov5", "custom", path: @"C:\Users\shabu\CUU_App\best.pt", source: "local");
+                    model = torch.hub.load(@"ultralytics\yolov5", "custom", path: @"C:\Users\admi1\Git\CUU_App\best.pt", source: "local");
                 dynamic np = Py.Import("numpy");
                 dynamic cv2 = Py.Import("cv2");
 
