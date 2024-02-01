@@ -4,17 +4,26 @@
 winexe
 C#
 .cs
-C:\Users\shabu\CUU_App\ObjectDetected\ObjectDetected\obj\Debug\
+C:\Users\admi1\Git\CUU_App\ObjectDetected\ObjectDetected\obj\Debug\
 ObjectDetected
 none
 false
 DEBUG;TRACE
+<<<<<<< HEAD
 C:\Users\shabu\CUU_App\ObjectDetected\ObjectDetected\App.xaml
 5-928062257
 41563447925
 112129397890
 30497544554
 MainWindow.xaml;Window1.xaml;Window2.xaml;Window3.xaml;Window4.xaml;
+=======
+C:\Users\admi1\Git\CUU_App\ObjectDetected\ObjectDetected\App.xaml
+41506324977
+4-817805365
+10733102040
+30-1289202114
+MainWindow.xaml;Window1.xaml;Window2.xaml;Window3.xaml;
+>>>>>>> 4c6e5abb9dc23b429b6ee90abae28a57a67269e7
 
 False
 
