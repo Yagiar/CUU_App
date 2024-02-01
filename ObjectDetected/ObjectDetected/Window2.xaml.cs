@@ -137,5 +137,13 @@ namespace ObjectDetected
             videoPlayerWindow.LoadVideo(videoPath);
             videoPlayerWindow.Show();
         }
+
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Window4 videoPlayerWindow = new Window4();
+            videoPlayerWindow.Show();
+            this.Close();
+        }
     }
 }

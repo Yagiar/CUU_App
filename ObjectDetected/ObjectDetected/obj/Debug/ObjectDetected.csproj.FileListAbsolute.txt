@@ -76,3 +76,5 @@ C:\Users\shabu\CUU_App\ObjectDetected\ObjectDetected\bin\Debug\OpenCvSharp.dll
 C:\Users\shabu\CUU_App\ObjectDetected\ObjectDetected\bin\Debug\OpenCvSharp.xml
 C:\Users\shabu\CUU_App\ObjectDetected\ObjectDetected\bin\Debug\Newtonsoft.Json.dll
 C:\Users\shabu\CUU_App\ObjectDetected\ObjectDetected\bin\Debug\Newtonsoft.Json.xml
+C:\Users\shabu\CUU_App\ObjectDetected\ObjectDetected\obj\Debug\Window4.g.cs
+C:\Users\shabu\CUU_App\ObjectDetected\ObjectDetected\obj\Debug\Window4.baml

@@ -10,6 +10,7 @@
         <ScrollViewer Name="videosScrollViewer" VerticalScrollBarVisibility="Visible">
             <WrapPanel x:Name="videosContainer" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal"/>
         </ScrollViewer>
-        
+        <Button Content="Button" HorizontalAlignment="Left" Margin="736,18,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+
     </Grid>
 </Window>

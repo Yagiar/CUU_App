@@ -26,18 +26,20 @@ namespace ObjectDetected
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            
             Window2 window2 = new Window2();
             // Показываем окно Window1
             window2.Show();
+            this.Close();
         }
 
         private void Reg_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            
             Window1 window1 = new Window1();
             // Показываем окно Window1
             window1.Show();
+            this.Close();
         }
     }
 }
