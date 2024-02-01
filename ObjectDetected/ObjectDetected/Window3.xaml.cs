@@ -127,7 +127,7 @@ namespace ObjectDetected
         }
         private void InitializePythonEngine()
         {
-            Runtime.PythonDLL = @"C:\Users\admi1\AppData\Local\Programs\Python\Python310\python310.dll";
+            Runtime.PythonDLL = @"C:\Users\shabu\AppData\Local\Programs\Python\Python311\python311.dll";
             // Инициализация Python
             PythonEngine.Initialize();
         }
@@ -140,7 +140,6 @@ namespace ObjectDetected
                     torch = Py.Import("torch");
                 if (model == null)
                     model = torch.hub.load(@"ultralytics\yolov5", "custom", path: @"best.pt", source: "local");
-                    model = torch.hub.load(@"ultralytics\yolov5", "custom", path: @"C:\Users\admi1\Git\CUU_App\best.pt", source: "local");
                 dynamic np = Py.Import("numpy");
                 dynamic cv2 = Py.Import("cv2");
 
