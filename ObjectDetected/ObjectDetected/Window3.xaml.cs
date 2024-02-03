@@ -127,7 +127,7 @@ namespace ObjectDetected
         }
         private void InitializePythonEngine()
         {
-            Runtime.PythonDLL = @"C:\Users\shabu\AppData\Local\Programs\Python\Python311\python311.dll";
+            Runtime.PythonDLL = @"C:\Users\admi1\AppData\Local\Programs\Python\Python310\python310.dll";
             // Инициализация Python
             PythonEngine.Initialize();
         }
