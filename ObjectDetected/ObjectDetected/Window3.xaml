@@ -16,8 +16,11 @@
             <Slider x:Name="progressSlider" Width="200" ValueChanged="ProgressSlider_ValueChanged"/>
             <Button x:Name="select_btn" Content="select" Click="select_btn_Click_1" />
             <ComboBox Width="120" x:Name="select_class">
-                <ComboBoxItem Content="jacket"/>
-                <ComboBoxItem Content="trousers"/>
+                <ComboBoxItem Content="No helmet"/>
+                <ComboBoxItem Content="No vest"/>
+                <ComboBoxItem Content="Person"/>
+                <ComboBoxItem Content="helmet"/>
+                <ComboBoxItem Content="vest"/>
             </ComboBox>
         </StackPanel>
         <Image x:Name="images" HorizontalAlignment="Left" Height="227" Margin="364,277,0,0" VerticalAlignment="Top" Width="313"/>

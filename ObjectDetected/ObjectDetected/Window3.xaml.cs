@@ -22,6 +22,7 @@ using System.Xml.Serialization;
 using Newtonsoft.Json.Linq;
 using static IronPython.Modules._ast;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Linq;
 
 namespace ObjectDetected
 {
@@ -37,6 +38,8 @@ namespace ObjectDetected
         private RenderTargetBitmap bitmap;
         private static dynamic torch;
         private static dynamic model;
+        private static dynamic posix_backup;
+        dynamic s;
         private VideoCapture videoCapture;
         private Polygon selectArea;
         private BitmapSource bitmapSource;
@@ -127,7 +130,7 @@ namespace ObjectDetected
         }
         private void InitializePythonEngine()
         {
-            Runtime.PythonDLL = @"C:\Users\admi1\AppData\Local\Programs\Python\Python310\python310.dll";
+            Runtime.PythonDLL = @"C:\Users\shabu\AppData\Local\Programs\Python\Python311\python311.dll";
             // Инициализация Python
             PythonEngine.Initialize();
         }
@@ -138,8 +141,20 @@ namespace ObjectDetected
             {
                 if (torch == null)
                     torch = Py.Import("torch");
+                if(posix_backup==null)
+                {
+                    s=Py.Import("pathlib");
+                    posix_backup = s.PosixPath;
+                    Console.WriteLine(posix_backup);
+                    s.PosixPath = s.WindowsPath;
+                }
                 if (model == null)
-                    model = torch.hub.load(@"ultralytics\yolov5", "custom", path: @"best.pt", source: "local");
+                {
+                    dynamic device = torch.device("cpu");
+                    model = torch.hub.load(@"ultralytics\yolov5", "custom", path: @"best.pt", source: "local", device: device);
+                    s.PosixPath = posix_backup;
+                }    
+                   
                 dynamic np = Py.Import("numpy");
                 dynamic cv2 = Py.Import("cv2");
 
@@ -181,15 +196,53 @@ namespace ObjectDetected
                         if (p == item.Name)
                         {
                             paint_area.Children.Add(draw(item.Xmin, item.Ymin, item.Xmax, item.Ymax, 2, System.Windows.Media.Brushes.LightGreen));
-                            RenderTargetBitmap bmp = new RenderTargetBitmap((int)paint_area.ActualWidth+10, (int)paint_area.ActualHeight+10, 96d, 96d, PixelFormats.Pbgra32);
-                            bmp.Render(paint_area);
-                            string path=@"..\..\destruction\"+ random.Next(1,99999999);
-                            SerializeObjects(path, bmp);
+                            TextBlock text = new TextBlock();
+                            text.Text = "Класс " + item.Name.ToString();
+                            text.Foreground = System.Windows.Media.Brushes.LightGreen;
+                            text.FontSize = 12;
+                            Canvas.SetTop(text, item.Ymin - 20);
+                            Canvas.SetLeft(text, item.Xmin + (item.Xmax - item.Xmin) / 2);
+                            paint_area.Children.Add(text);
+                            TextBlock text1 = new TextBlock();
+                            text1.Text = "Confidence" + item.Confidence.ToString();
+                            text1.Foreground = System.Windows.Media.Brushes.LightGreen;
+                            text1.FontSize = 12;
+                            Canvas.SetTop(text1, item.Ymin - 40);
+                            Canvas.SetLeft(text1, item.Xmin + (item.Xmax - item.Xmin) / 2);
+                            paint_area.Children.Add(text1);
+                            // Use Dispatcher to invoke the SerializeObjects after rendering is complete
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                System.Threading.Thread.Sleep(100); // Добавьте небольшую задержку (миллисекунды)
+                                char[] separators = { '.' };
+                                string[] parts = mediaPlayer.Position.ToString().Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                                string s = parts[parts.Length - 1];
+                                string lastElement = parts[0];
+                                char[] separators2 = { ':' };
+                                parts = lastElement.Split(separators2, StringSplitOptions.RemoveEmptyEntries);
+                                string path = @"..\..\destruction\" + parts[0] + "-" + parts[1] + "-" + parts[2] + "-" + s + " " + p;
+                                SerializeObjects(path, paint_area);
+                            }, System.Windows.Threading.DispatcherPriority.Background);
+
                         }
                     }
                     else
                     {
                         paint_area.Children.Add(draw(item.Xmin, item.Ymin, item.Xmax, item.Ymax, 2, System.Windows.Media.Brushes.LightGreen));
+                        TextBlock text = new TextBlock();
+                        text.Text = "Класс " + item.Name.ToString();
+                        text.Foreground = System.Windows.Media.Brushes.LightGreen;
+                        text.FontSize = 12;
+                        Canvas.SetTop(text, item.Ymin - 20);
+                        Canvas.SetLeft(text, item.Xmin + (item.Xmax - item.Xmin) / 2);
+                        paint_area.Children.Add(text);
+                        TextBlock text1 = new TextBlock();
+                        text1.Text = "Confidence " + item.Confidence.ToString();
+                        text1.Foreground = System.Windows.Media.Brushes.LightGreen;
+                        text1.FontSize = 12;
+                        Canvas.SetTop(text1, item.Ymin - 40);
+                        Canvas.SetLeft(text1, item.Xmin + (item.Xmax - item.Xmin) / 2);
+                        paint_area.Children.Add(text1);
                     }
                    
                     //Console.WriteLine($"Class: {item.Class}, Name: {item.Name}");
@@ -201,16 +254,41 @@ namespace ObjectDetected
                 Console.WriteLine(results.ToString());
             }
         }
-        static void SerializeObjects(string filePath, RenderTargetBitmap objectsToSerialize)
+        private static void SerializeObjects(string filePath, FrameworkElement element)
         {
-            PngBitmapEncoder encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(objectsToSerialize));
-
-            using (FileStream fs = new FileStream(filePath+".png", FileMode.Create))
+            try
             {
-                encoder.Save(fs);
+                var drawingVisual = new DrawingVisual();
+                using (var context = drawingVisual.RenderOpen())
+                {
+                    var brush = new VisualBrush(element);
+                    context.DrawRectangle(brush, null, new System.Windows.Rect(new System.Windows.Point(), new System.Windows.Size(element.ActualWidth, element.ActualHeight)));
+                }
+
+                var renderTargetBitmap = new RenderTargetBitmap(
+                    (int)Math.Ceiling(element.ActualWidth),
+                    (int)Math.Ceiling(element.ActualHeight),
+                    96,
+                    96,
+                    PixelFormats.Pbgra32
+                );
+
+                renderTargetBitmap.Render(drawingVisual);
+
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
+
+                using (FileStream fs = new FileStream(filePath + ".png", FileMode.Create))
+                {
+                    encoder.Save(fs);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при сохранении изображения: {ex.Message}");
             }
         }
+
 
         private Polygon draw(double x1, double y1, double x2, double y2, int s, System.Windows.Media.Brush b)
         {
