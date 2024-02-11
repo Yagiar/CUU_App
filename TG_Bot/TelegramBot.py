@@ -15,6 +15,9 @@ def send_image(update: Update, context: CallbackContext) -> None:
     if image_files:
         for image in image_files:
             image_path = os.path.join(image_folder_path, image)
+            strs =image_path.split("\\",1)
+            update.message.reply_text('Время: '+strs[1].split(" ",1)[0])
+            update.message.reply_text('Нарушение: '+strs[1].split(" ",1)[1].split(".",1)[0])
             update.message.reply_photo(open(image_path, 'rb'))
     else:
         update.message.reply_text('В папке нет изображений!')
